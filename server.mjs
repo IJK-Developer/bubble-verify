@@ -16,8 +16,7 @@ app.post('/proxy/admin-api', async (req, res) => {
     const adminEndpoint = 'https://rqnj0i-rt.myshopify.com/admin/api/2025-01/graphql.json';
 
     try {
-        // Log the incoming request for debugging
-        console.log('Request Body:', req.body);
+        console.log('Received request:', req.body);
 
         const response = await fetch(adminEndpoint, {
             method: 'POST',
@@ -38,8 +37,7 @@ app.post('/proxy/admin-api', async (req, res) => {
         const data = await response.json();
         res.status(200).send(data);
     } catch (error) {
-        // Log and return server error
-        console.error('Error in Proxy Server:', error);
+        console.error('Proxy Server Error:', error);
         res.status(500).json({ error: error.message });
     }
 });
