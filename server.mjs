@@ -28,5 +28,5 @@ app.post("/proxy/admin-api", async (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Proxy server is running on http://localhost:${port}`);
+    console.log(`Proxy server is running on https://bubble-verify.onrender.com/:${port}`);
 });
