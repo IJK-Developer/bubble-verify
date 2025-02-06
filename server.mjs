@@ -15,9 +15,9 @@ app.post('/proxy/admin-api', async (req, res) => {
     const adminApiToken = process.env.SHOPIFY_API_TOKEN;  // Keep sensitive tokens in .env
     const adminEndpoint = 'https://rqnj0i-rt.myshopify.com/admin/api/2025-01/graphql.json';
 
-    try {
-        console.log('Received request:', req.body);
+    console.log('Received request body:', req.body);  // Log the request body to help debug
 
+    try {
         const response = await fetch(adminEndpoint, {
             method: 'POST',
             headers: {
