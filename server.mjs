@@ -15,7 +15,7 @@ app.post("/proxy/admin-api", async (req, res) => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-              
+                "X-Shopify-Access-Token": adminApiToken,
             },
             body: JSON.stringify(req.body),
         });
