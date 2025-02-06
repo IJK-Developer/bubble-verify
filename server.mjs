@@ -3,20 +3,22 @@ import fetch from 'node-fetch';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
-// Load environment variables from .env file
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = 3000;
 
+app.use(cors());
 app.use(express.json());
-app.use(cors()); // Enable CORS
 
 app.post('/proxy/admin-api', async (req, res) => {
-    const adminApiToken = process.env.SHOPIFY_API_TOKEN; // Use environment variable
-    const adminEndpoint = process.env.SHOPIFY_STORE_URL; // Use environment variable
+    const adminApiToken = process.env.SHOPIFY_API_TOKEN;  // Keep sensitive tokens in .env
+    const adminEndpoint = 'https://rqnj0i-rt.myshopify.com/admin/api/2025-01/graphql.json';
 
     try {
+        // Log the incoming request for debugging
+        console.log('Request Body:', req.body);
+
         const response = await fetch(adminEndpoint, {
             method: 'POST',
             headers: {
@@ -26,10 +28,19 @@ app.post('/proxy/admin-api', async (req, res) => {
             body: JSON.stringify(req.body),
         });
 
+        // Check for response errors from Shopify Admin API
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error('Shopify Admin API Error:', errorData);
+            return res.status(500).json({ error: 'Error from Shopify Admin API', details: errorData });
+        }
+
         const data = await response.json();
-        res.status(200).send(data); // Respond with data from Shopify API
+        res.status(200).send(data);
     } catch (error) {
-        res.status(500).send({ error: error.message });
+        // Log and return server error
+        console.error('Error in Proxy Server:', error);
+        res.status(500).json({ error: error.message });
     }
 });
 
