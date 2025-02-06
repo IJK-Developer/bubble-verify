@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 import cors from 'cors';
 import dotenv from 'dotenv';
 
-dotenv.config();
+dotenv.config(); // Ensure environment variables are loaded from .env file
 
 const app = express();
 const port = 3000;
@@ -12,10 +12,10 @@ app.use(cors());
 app.use(express.json());
 
 app.post('/proxy/admin-api', async (req, res) => {
-    const adminApiToken = process.env.SHOPIFY_API_TOKEN;  // Keep sensitive tokens in .env
-    const adminEndpoint = 'https://rqnj0i-rt.myshopify.com/admin/api/2025-01/graphql.json';
+    const adminApiToken = process.env.SHOPIFY_API_TOKEN; // Make sure your .env has the correct token
+    const adminEndpoint = 'https://rqnj0i-rt.myshopify.com/admin/api/2025-01/graphql.json'; // Update with your store's domain
 
-    console.log('Received request body:', req.body);  // Log the request body to help debug
+    console.log('Received request body:', req.body);
 
     try {
         const response = await fetch(adminEndpoint, {
@@ -27,7 +27,6 @@ app.post('/proxy/admin-api', async (req, res) => {
             body: JSON.stringify(req.body),
         });
 
-        // Check for response errors from Shopify Admin API
         if (!response.ok) {
             const errorData = await response.json();
             console.error('Shopify Admin API Error:', errorData);
